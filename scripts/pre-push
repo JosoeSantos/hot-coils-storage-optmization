@@ -6,6 +6,8 @@
 MAIN_TEX=apresentacao-1/apresentacao1_principal.tex
 BUILDDIR=apresentacao-1/build
 
+echo "\033[0;33m[INFO] Iniciando verificação de erros de LaTeX...\033[0m"
+
 # Compile o documento (sem interatividade)
 make > /dev/null 2>&1
 
@@ -14,6 +16,9 @@ if grep -q "! " "$BUILDDIR/$(basename "$MAIN_TEX" .tex).log"; then
     echo "\033[0;31m[ERRO] O push foi bloqueado: erros de LaTeX encontrados no arquivo $BUILDDIR/$(basename "$MAIN_TEX" .tex).log\033[0m"
     echo "Revise os erros acima antes de tentar novamente."
     exit 1
+else
+    echo "\033[0;32m[OK] O push foi OK: não foram encontrados erros de LaTeX no arquivo $BUILDDIR/$(basename "$MAIN_TEX" .tex).log\033[0m"
 fi
+
 
 exit 0
