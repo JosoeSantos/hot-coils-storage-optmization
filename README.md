@@ -37,6 +37,14 @@ brew install git make mactex
 - [MikTeX](https://miktex.org/download)
 - [Make via Chocolatey](https://community.chocolatey.org/packages/make) (opcional)
 
+### Primeira configuração
+
+Execute o comando abaixo para configurar os hooks do git:
+```sh
+./setup-hooks.sh
+```
+
+
 ### 3. Compilar os documentos projeto
 
 Execute o comando abaixo na raiz do documento para gerar o PDF na pasta `build/`:

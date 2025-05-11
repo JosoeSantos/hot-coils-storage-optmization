@@ -1,0 +1,19 @@
+#!/bin/sh
+# pre-push git hook: Prevent push if there are LaTeX errors in the main document
+# Usage: Place this file in .git/hooks/ and make it executable (chmod +x .git/hooks/pre-push)
+
+# Ajuste o nome do arquivo principal conforme necessário
+MAIN_TEX=apresentacao-1/apresentacao1_principal.tex
+BUILDDIR=apresentacao-1/build
+
+# Compile o documento (sem interatividade)
+make > /dev/null 2>&1
+
+# Verifica se o log contém erros fatais do LaTeX
+if grep -q "! " "$BUILDDIR/$(basename "$MAIN_TEX" .tex).log"; then
+    echo "\033[0;31m[ERRO] O push foi bloqueado: erros de LaTeX encontrados no arquivo $BUILDDIR/$(basename "$MAIN_TEX" .tex).log\033[0m"
+    echo "Revise os erros acima antes de tentar novamente."
+    exit 1
+fi
+
+exit 0
