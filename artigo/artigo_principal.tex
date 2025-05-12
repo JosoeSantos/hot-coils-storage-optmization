@@ -1,0 +1,142 @@
+
+\documentclass[journal]{IEEEtran}
+
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+\usepackage{graphicx}
+%\usepackage[ref, superscript]{cite}
+\usepackage[numbers, super]{natbib}
+\usepackage{picinpar}
+\usepackage{amsmath}
+\usepackage{url}
+\usepackage{textcomp}
+\usepackage{flushend}
+\usepackage{colortbl}
+\usepackage{soul}
+\usepackage{multirow}
+\usepackage{pifont}
+\usepackage{color}
+\usepackage{alltt}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumerate}
+\usepackage{siunitx}
+\usepackage{epstopdf}
+\usepackage{pbox}
+\usepackage{adjustbox}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{booktabs}
+\usepackage{mathtools}
+\usepackage{subfig}
+\usepackage{amsfonts}
+\usepackage{epsfig}
+\usepackage{cleveref}
+\usepackage{times} %usa a fonte times 
+\usepackage{lastpage} %para obter o número da última página
+\usepackage{float}
+\pagenumbering{arabic} %Numeração de página
+
+\bibliographystyle{abbrvnat}
+
+\begin{document}
+
+    \title{ Aplicação da Pesquisa Operacional na programação de FPGAs com síntese de alto nível }
+    \nocite{*}
+    \author{Everson Elias Gonçalves de Oliveira, Felippe} 
+    
+    \maketitle
+    	
+    \begin{abstract}
+        Parágrafo.\\
+        Parágrafo.\\
+        Parágrafo.\\
+        Parágrafo.
+    \end{abstract}
+    
+    \begin{IEEEkeywords}
+        SSA, 
+    \end{IEEEkeywords}
+    
+    \section{Introduction}
+        \subsection{FPGAs}
+        FPGAs (field-programmable gate arrays) são dispositivos lógicos programáveis que suportam a implementação de circuitos digitais e que são amplamente reconhecidos pelas suas vantagens: elevado grau de paralelismo; alta capacidade de realização de cálculos matemáticos; baixo consumo de energia; flexibilidade e tolerância a falhas.
+        
+        Nas últimas décadas, FPGAs se tornaram populares em diversas áreas. Na indústria de telecomunicações, por exemplo, elas são encontradas em torres de telefonia móvel para rotear tráfego de internet. Na indústria financeira, FPGAs são utilizadas para executar algoritmos para compra e venda automática de ações com extrema velocidade. Na defesa, elas são utilizadas para o processamento digital de sinais em radares. Finalmente, destaca-se o uso de FPGAs em veículos autonômos e na aceleração de redes neurais artificais.
+
+        \subsection{Síntese de alto nível}
+        Apesar dessa crescente popularização, a utilização de FPGAs ainda enfrenta resistência por parte de muitas pessoas, tendo em vista que as FPGAs são programadas com linguagens de descrição de hardware (\textit{hardware description language} - \textit{HDL}), como VHDL e Verilog, o que é considerado mais complexo e maçante do que a programação com linguagens de alto nível, como C e C++.
+        
+        Então, a síntese de alvo nível se torna cada vez mais relevante (\textit{high-level synthesis} - \textit{HLS}). Trata-se de um processo de design automatizado que pega uma especificação comportamental abstrata de um sistema digital e encontra uma estrutura RTL (register transfer level) que realiza o comportamento determinado. Assim, a programação de FPGAs pode ser feita com linguagens de alto nível.
+
+        A partir do código em C/C++, o Vitis HLS, a plataforma de síntese de alto nível da AMD/Xilinx, é capaz de inferir o paralelismo entre as funcionalidades, de modo a reduzir a latência e maximizar o benefício único de se trabalhar com SoC/FPGA.
+        
+        \subsection{Escopo do trabalho}
+        A síntese de alto nível objetiva facilitar o projeto de hardware sem que esse novo nível de abstração afete negativamente as vantagens de se utilizar FPGAs. Neste artigo, vamos nos concentrar na análise do paralelismo. A partir do código em C/C++, as plataformas de síntese de alto nível devem ser capazes de inferir o paralelismo entre as funcionalidades, de modo a reduzir a latência e maximizar o benefício de se trabalhar com FPGAs.
+                
+        As plataformas de síntese de alvo nível devem garantir que o código feito em C ou C++ seja convertido para um sistema digital da forma mais eficiente possível. Nesse cenário, a Pesquisa Operacional pode se tornar uma importante aliada. Através de técnicas de modelagem matemática e algoritmos computacionais, a Pesquisa Operacional pode auxiliar as plataformas de síntese de alto nível na análise dos mais variados aspectos de um código em C ou C++.
+
+        Portanto, o nosso objetivo é confirmar o quão úteis podem ser as técnicas de Pesquisa Operacional para a garantia do paralelismo na síntese de alto nível e, consequentemente, a minimização da latência total de um sistema, ou seja, o tempo que ele demora para terminar um conjunto de atividades.
+
+        \subsection{Estrutura do artigo}
+
+        A estrutura do artigo é a seguinte. Na seção II revisa-se brevemente trabalhos que abordam a  classe de problemas que o nosso objeto de estudo integra.
+        
+    \section{Revisão da literatura}
+        Atualmente, conseguimos confirmar a existência de 26 plataformas de síntese de alto nível\cite{Wikipedia}. Há um estudo que comparou essas plataformas\cite{Meeus}, mas não da maneira que propusemos neste artigo. Os autores daquele estudo reforçaram a importância da síntese de alto nível, em virtude da crescente complexidade de projetos de sistemas embutidos. No entanto, o estudo se limitou a comparar as ferramentas no que tange à usabilidade, à qualidade dos resultados e à capacidade.
+
+        Não encontramos nenhum estudo com o mesmo assunto deste artigo. A verificação foi realizada nas plataformas da Elsevier, do Google Acadêmico e da IEEE. Os termos aplicados na busca foram "pesquisa operacional", "operational research", "FPGA", "SoC", "síntese de alto nível", "HLS", "high-level synthesis" e "high level synthesis".
+
+        Optamos, então, por pesquisar uma classe de problemas na qual o nosso estudo poderia se enquadrar: problema de programação de projeto com restrição de recursos (\textit{resource-constrained multi-project scheduling problem} - \textit{RCPSP}). O problema de otimização minimiza o tempo de execução do projeto, sujeito a relações de precedência entre as atividades e as restrições de recursos.
+        
+        De acordo com Vincent Van Peteghem e Mario Vanhoucke\cite{VANPETEGHEM201462}, para resolver o RCPSP é necessário que as relações de precedência entre as atividades sejam satisfeitas; a quantidade de cada recurso consumida durante cada instante de tempo não ultrapasse a disponibilidade total do respectivo recurso; e, que o instante de início de cada atividade seja determinado; tal que o objetivo é minimizar o tempo total de conclusão do projeto, ou no tempo de conclusão da última atividade.
+        
+        A programação de projetos com restrições de recursos tem sido um tópico de pesquisa bem conhecido e amplamente estudado nas últimas décadas. Luciana Vieira de Melo e Thiago Alves de Melo Queiroz\cite{LucianaThiago} apresentam uma extensa literatura sobre o tema e revisam, brevemente, trabalhos que utilizaram métodos exatos e heurísticos para resolver o RCPSP com restrições reais.
+
+        Analisando as contribuições da literatura, o estudo de Melo e Queiroz concentra-se no desenvolvimento e na comparação de modelos e métodos exatos para o RCPSP, com o objetivo de encontrar soluções ótimas. Eles desenvolvem modelos de programação linear inteira, resolvidos pelo \textit{solver Gurobi Optimizer}, utilizando seu algoritmo \textit{branch-and-cut}, que incluem aspectos práticos do problema ainda pouco explorados, mas de grande interesse, como restrições de múltiplas habilidades, múltiplos modos e tempos de atraso. Essas restrições consideram modelos que minimizam a duração total do projeto, diferentemente daqueles que se dedicam à minimização de custos ou abordam um problema multiobjetivo.
+        
+        Para garantir uma comparação detalhada dos modelos, o estudo de Melo e Queiroz realiza experimentos com mais de 2000 instâncias de diferentes tamanhos (incluindo até 202 atividades, 20 recursos distintos e 15 tipos de habilidades). Por fim, os referidos autores concluem que os resultados computacionais indicam que o \textit{solver}, ao resolver os modelos desenvolvidos, teve um comportamento satisfatório.
+
+    \section{Descrição do problema}
+        Na execução de conjuntos de atividades por uma FPGA, a melhor forma de reduzir a latência da execução e através de paralelismo, realizando operações diferentes ao mesmo tempo, e as que dependem de outra atividade utilizam o resultado do ciclo anterior. Com isso, podemos buscar otimizar a repetição encontrando qual é o máximo de tarefas diferentes que podem ser executadas simultaneamente, definindo o progresso máximo a cada ciclo.
+        Nesse sentido, devemos considerar que o consumo total de recursos pelas tarefas não deve superar a quantidade de recursos disponíveis na FPGA. Além disso, precisamos considerar que as operações com dependentes só podem ser realizadas se essa tarefa também é feita, garantindo um progresso no ciclo seguinte ao invés de causar uma estagnação.
+
+        Realizando nossa modelagem, temos:\\
+        \( f \): quantidade de tarefas do sistema\\
+        \( r \): quantidade de recursos do sistema\\
+        \( a_ki \): indica se uma tarefa k é dependente de outra tarefa i (variável binária)\\
+        \( x_i \): indica se a tarefa i é realizada (variável binária)\\
+        \( b_j \): quantidade de recursos j disponíveis na FPGA.\\
+        \( c_ij \): indica quantos recursos j são necessários para a tarefa i.
+        
+        A otimização que buscamos pode ser representada por:
+
+        \[
+        \max_{} \sum_{i=1}^{f} x_i 
+        \]
+        
+        Com a restrição de dependência definida por:
+        
+        \[
+        x_i \geq x_k \cdot a_{ik}~~\forall i \in \{1, 2, \ldots, f\},~~ \forall k \in \{1, 2, \ldots, f\}
+        \]
+
+        E a restrição de recursos disponíveis definido por:
+
+        \[
+        \max_{} \sum_{i=1}^{f} x_i \cdot c_{ij} \leq b_j~~\forall j \in \{1, 2, \ldots, r\}
+        \]
+        
+    \section{Descrição do algoritmo}
+
+
+        
+    \section{Resultados e análise}
+
+
+    
+    \section{Conclusão}            
+
+    Neste artigo, buscamos aplicar técnicas da Pesquisa Operacional na otimização de paralelismo na progamação de FPGAs por meio da síntese de alto nível. Ao mesmo tempo, isso significou uma revisão das soluções para os problemas do tipo RCPSP.
+    
+    \bibliography{referencias}
+
+\end{document}
