@@ -2,7 +2,7 @@
 
 TEX=pdflatex
 BIBTEX=bibtex
-MAIN=apresentacao-1_principal
+MAIN=apresentacao-2_principal
 BUILDDIR=build
 
 all: $(BUILDDIR)/$(MAIN).pdf
