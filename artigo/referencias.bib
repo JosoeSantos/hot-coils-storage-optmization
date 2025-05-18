@@ -1,40 +1,35 @@
-@misc{Wikipedia,
-  author = {Wikipedia},
-  title  = {High-level synthesis},
-  url    = {https://en.wikipedia.org/wiki/High-level_synthesis},
-  year   = {2017}
+
+@article{Weckenborg2025,
+  abstract      = {In steel coil storages, gantry cranes store steel coils in a triangular stacking pattern and retrieve them to serve customer demand on time. The crane movements cause high energy consumption depending on the weight of the steel coils and the direction of the crane movement, which provides a starting point for more efficient crane operation in terms of energy consumption. However, current literature on crane scheduling in steel coil storages and neighboring domains mainly focuses on time-oriented objectives and neglects energy consumption. Therefore, we justify the problem of energy-oriented crane scheduling in steel coil storages and develop a mixed-integer linear programming model and a simulated annealing algorithm. The methods aim to minimize the energy consumed by crane movements while serving customer demand. We present extensive computational experiments comparing the energy-oriented approach against two popular alternatives from the literature. The energy consumption of crane movements can be reduced by 2--22{\%} using energy-oriented crane scheduling compared to the alternatives with an identical customer service level. The simulated annealing algorithm solves instances of the size commonly found in the industrial practice of steel coil storage within an amount of time suitable for practical applications. Since extensive test instances for crane scheduling of steel coil storages have not been available thus far, we make our test instances accessible as a starting point for future research efforts.},
+  author        = {Weckenborg, Christian and Oetjegerdes, Patrick and Spengler, Thomas S.},
+  date          = {2025/03/01},
+  date-added    = {2025-05-17 21:10:57 -0300},
+  date-modified = {2025-05-17 21:10:57 -0300},
+  doi           = {10.1007/s10696-024-09534-0},
+  id            = {Weckenborg2025},
+  isbn          = {1936-6590},
+  journal       = {Flexible Services and Manufacturing Journal},
+  number        = {1},
+  pages         = {97--124},
+  title         = {Energy-oriented crane scheduling in a steel coil storage},
+  url           = {https://doi.org/10.1007/s10696-024-09534-0},
+  volume        = {37},
+  year          = {2025},
+  bdsk-url-1    = {https://doi.org/10.1007/s10696-024-09534-0}
 }
 
-@article{Meeus,
-  author  = {Wim Meeus, Kristof Van Beeck, Toon Goedemé, Jan Meel, Dirk Stroobandt},
-  title   = {An overview of today’s high-level synthesis tools},
-  journal = {Design Automation for Embedded Systems},
-  year    = {2012}
-}
 
-@article{VANPETEGHEM201462,
-  title    = {An experimental investigation of metaheuristics for the multi-mode resource-constrained project scheduling problem on new dataset instances},
+@article{YUAN2017424,
+  title    = {Novel time-space network flow formulation and approximate dynamic programming approach for the crane scheduling in a coil warehouse},
   journal  = {European Journal of Operational Research},
-  volume   = {235},
-  number   = {1},
-  pages    = {62-72},
-  year     = {2014},
+  volume   = {262},
+  number   = {2},
+  pages    = {424-437},
+  year     = {2017},
   issn     = {0377-2217},
-  doi      = {https://doi.org/10.1016/j.ejor.2013.10.012},
-  url      = {https://www.sciencedirect.com/science/article/pii/S0377221713008357},
-  author   = {Vincent {Van Peteghem} and Mario Vanhoucke},
-  keywords = {Project scheduling, Multi-mode, Metaheuristics},
-  abstract = {In this paper, an overview is presented of the existing metaheuristic solution procedures to solve the multi-mode resource-constrained-project scheduling problem, in which multiple execution modes are available for each of the activities of the project. A fair comparison is made between the different metaheuristic algorithms on the existing benchmark datasets and on a newly generated dataset. Computational results are provided and recommendations for future research are formulated.}
-}
-
-@article{LucianaThiago,
-  author   = {Melo, Luciana Vieira de and Queiroz, Thiago Alves de},
-  journal  = {IEEE Latin America Transactions},
-  title    = {Integer Linear Programming Formulations for the RCPSP considering Multi-Skill, Multi-Mode, and Minimum and Maximum Time Lags},
-  year     = {2021},
-  volume   = {19},
-  number   = {01},
-  pages    = {5-16},
-  keywords = {Computational modeling;Scheduling;Optimal scheduling;Integer linear programming;Mathematical model;IEEE transactions;Software;Mathematical model;Optimal scheduling;Optimization},
-  doi      = {10.1109/TLA.2021.9423821}
+  doi      = {https://doi.org/10.1016/j.ejor.2017.03.007},
+  url      = {https://www.sciencedirect.com/science/article/pii/S0377221717301935},
+  author   = {Yuan Yuan and Lixin Tang},
+  keywords = {Scheduling, Logistics, Coil warehouse, Time-space network flow formulation, Approximate dynamic programming},
+  abstract = {This article proposes an efficient event-based time-space network flow model with side constraints for the crane scheduling problem in a coil warehouse where the crane should carry out a set of coil storage, retrieval and shuffling requests, and determine the sequence of handling these requests as well as the positions to which the coils are moved. The model is formulated based on a graph such that each node represents a location in the warehouse at the end of a specific scheduling stage, and each edge indicates a crane's move between two locations in a stage. Variables reduction strategies are presented to accelerate solving the model. In order to solve large-sized instances of the problem, an exact dynamic programming approach based on optimal assignments between coils and positions in a bipartite network with cuts is designed by exploiting the problem structure. Then an approximate dynamic programming (ADP) approach is developed, in which an affine value function approximation is defined as the estimation of crane's traveling time for handling each coil, and updated via iterations by collecting information from the solutions of separate subproblems. Computational results show that the proposed model is tighter and can be solved much more quickly than a traditional model for a reduced crane scheduling problem in the literature and the standard time-space network flow model. Besides, the proposed algorithm can obtain high quality solutions for large-sized instances in a few minutes and is more efficient in solving the problem than a commercial software package.}
 }
