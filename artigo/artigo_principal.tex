@@ -79,6 +79,64 @@
         entrada e saída de bobinas respectivamente. Todos os pontos de entrada 
         com posições $k,q\in\Phi=\{I,O\}\cap\Psi$.
     
+        As bobinas $A_{in}\subseteq{A}$ podem ser transportadas de $I$ para o 
+        armazém no intervalo de tempo contínuo $[\sigma^-, \sigma^+]$ e
+        conjunto $A_{out}\subseteq{A}$ pode ser transportado para $O$ no intervalo
+        $[\omega^-,\omega^+]$. Nisto também consideramos o tempo de movimentação
+        $t^{load}_{kq}$ e a energia gasta $E^{load}_{kq}$ para movimentar a ponte
+        rolante carregada para o espaço $(k,q)$. Similarmente, tempo de movimentação
+        para uma movimentação descarregada $t^{empty}_{kq}$ e o consumo energético 
+        $E^{empty}_{kq}$ também ja são definidos. 
+
+        O tempo também é separado em seções $S$ que servem para limitar somente 
+        um movimento da ponte rolate para cada seção $s,\hat{s}\in\{1...|S|\}$.
+
+        As variáveis de decisão $\tau^s\in\mathbb{R}$ simbolizam o tempo de 
+        início de cada seção $s$. Uma movimentação no estágio $s$ carregada com 
+        a bobina $a$ para o espaço $(k,q)$ é definida por $W^{s}_{qk,a}$ e é uma 
+        variável binária onde 1 indica a occorrencia da movimentação e 0 o 
+        contrário. De forma parecida uma movimentação descarregada na seção $s$
+        para a posição $(k,q)$ é denotada por $V^{s}_{k,q}$. Finalmente a variável 
+        $x^{s}_{q,a}$ denota que a bobina $a$ está armazenada na posição $q$ 
+        durante o intervalo $s$. 
+
+        De acordo com \cite{YUAN2017424} As posições $k$ e $q$ são modeladas de 
+        acordo com um array de três inteiros que delimitam as posições em largura,
+        profundidade e altura e elas são definidas de acordo com a disposição de
+        espaço do armazáem otimizado. 
+
+        \subsection{Modelagem PLIM}
+
+        O objetivo de otimização é a redução do custo energético de operação da 
+        ponte rolante dado o espaço delimitado. Para tal queremos minimizar o 
+        custo total de movimentação da ponte rolante carregada e vazia.
+
+        \begin{equation}   
+            \begin{align*}
+                \min E &= \sum_{k \in \Phi} \sum_{q \in \Phi} \sum_{s \in S} \sum_{a \in A} 
+                        \left( E_{kq,a}^{\text{load}} \cdot W_{kq,a}^s \right) \\
+                    &\quad + \sum_{k \in \Phi} \sum_{q \in \Phi} \sum_{s \in S} 
+                        \left( E_{kq}^{\text{empty}} \cdot V_{kq}^s \right)
+            \end{align*}
+        \label{eq:objetivo}
+        \end{equation}
+
+        %% mais opções de formatação em https://claude.ai/public/artifacts/21eeb3b8-a6b8-4752-9433-9b1826e63fe4
+
+        Sujeito a:
+
+        \begin{equation}
+            \tau^{1} = 0
+            \label{eq:t0}
+        \end{equation}
+
+        A igualdade \ref{eq:t0} implica que o tempo inicial modelado é o instante 0.
+
+        \begin{equation}
+            \label{}
+        \end{equation}
+
+
     \section{Descrição do algoritmo}
 
 
