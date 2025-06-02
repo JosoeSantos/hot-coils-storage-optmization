@@ -111,15 +111,13 @@
         ponte rolante dado o espaço delimitado. Para tal queremos minimizar o 
         custo total de movimentação da ponte rolante carregada e vazia.
 
-        \begin{equation}   
-            \begin{align*}
-                \min E &= \sum_{k \in \Phi} \sum_{q \in \Phi} \sum_{s \in S} \sum_{a \in A} 
-                        \left( E_{kq,a}^{\text{load}} \cdot W_{kq,a}^s \right) \\
-                    &\quad + \sum_{k \in \Phi} \sum_{q \in \Phi} \sum_{s \in S} 
-                        \left( E_{kq}^{\text{empty}} \cdot V_{kq}^s \right)
-            \end{align*}
-        \label{eq:objetivo}
-        \end{equation}
+        \begin{align*}
+            \min E &= \sum_{k \in \Phi} \sum_{q \in \Phi} \sum_{s \in S} \sum_{a \in A} 
+                    \left( E_{kq,a}^{\text{load}} \cdot W_{kq,a}^s \right) \\
+                &\quad + \sum_{k \in \Phi} \sum_{q \in \Phi} \sum_{s \in S} 
+                    \left( E_{kq}^{\text{empty}} \cdot V_{kq}^s \right)
+            \label{eq:objetivo}
+        \end{align*}
 
         %% mais opções de formatação em https://claude.ai/public/artifacts/21eeb3b8-a6b8-4752-9433-9b1826e63fe4
 
@@ -133,10 +131,165 @@
         A igualdade \ref{eq:t0} implica que o tempo inicial modelado é o instante 0.
 
         \begin{equation}
-            \label{}
+            \sum_{q \in \Phi | q \neq I} \sum_{s \in S} W_s I_{q,a} = 1 \quad \forall a \in A_{in} 
+            \label{eq:in_movement_limit}
         \end{equation}
 
+        \begin{equation}
+        \sum_{k \in \Phi | k \neq O} \sum_{s \in S} W_s k_{O,a} = 1 \quad \forall a \in A_{out}
+        \label{eq:out_movement_limit}
+        \end{equation}
 
+        A equação \ref{eq:in_movement_limit} 
+        garantem que todas as cargas posicionadas na área de entrada são transportadas
+        para o armazem ou para a saída diretamente. E  \ref{eq:out_movement_limit} 
+        implica que todas as bobinas que devem ser entreques em $S$ são entregues.
+
+
+        \begin{equation}
+            \sum_{k \in \Phi | k \neq O} \sum_{s \in S} W_s k_{O,a} = 0 \quad \forall a \in A \setminus A_{out} 
+            \label{eq:storage_requirement}
+        \end{equation}
+
+        Em contraste trata dos casos em que a bobina fica armazenada, portanto não
+        entregue em $S$.
+        
+        
+
+        \begin{equation}
+        s^- + a \leq (1 - x_s I_a) \cdot M \quad \forall a \in A_{in}, s \in S 
+            \label{eq:storage_in_time}
+        \end{equation}
+        
+        \begin{equation}
+            -a - s^+ \leq x_s I_a \cdot M \quad \forall a \in A_{in}, s \in S 
+            \label{eq:storage_deadline_time}
+        \end{equation}
+        
+        As equações \ref{eq:storage_in_time} e \ref{eq:storage_deadline_time} definem
+        prioridades de movimentação para os momentos em que as cargas ficam disponíveis
+        para armazenamento e o tempo limite de entrega respectivamente.
+
+        \begin{align}
+            \omega_a^- - \Bigg( \tau^s + 
+            \sum_{k \in \Phi \mid k \neq O} \left( W^s_{kO,a} \cdot t^{load}_{kO} \right) 
+            \Bigg) 
+            &\leq (1 - x^s_{O,a}) \cdot M \notag \\
+            &\forall a \in A_{out},\ s \in S 
+            \label{eq:out_time_start}
+        \end{align}
+        A equação \ref{eq:out_time_start} evita que uma bobina seja entregue antes
+        do tempo limite de entrega.
+
+        \begin{align}
+            s \geq\; & s^{-1} 
+            + \sum_{k \in \Phi} \sum_{q \in \Phi} \left( t^{empty}_{kq} \cdot V^{s-1}_{kq} \right) \notag \\
+            & + \sum_{k \in \Phi} \sum_{q \in \Phi} \sum_{a \in A} \left( t^{load}_{kq} \cdot W^{s-1}_{kq,a} \right) \notag \\
+            & \forall\, s \in S,\ s \neq 1 \label{eq:time_progression}
+        \end{align}
+
+        A equação \ref{eq:time_progression} define a progressão do tempo em cada
+         seção $s$.
+        Note que cada intervalo não $s$ não sobrepoe outros intervaos e inclusíve
+        essa formulação deixa aberta a possibilidade de tempo de espera entre fases.
+        
+        \begin{equation}
+            \sum_{k \in \Phi} x^s_{ka} = 1 \quad \forall a \in A,\ s \in S
+            \label{eq:storage_only_one_coil}
+        \end{equation}
+
+        \begin{equation}
+            \sum_{a \in A} x^s_{ka} \leq 1 \quad \forall a \in A, s \in S
+            \label{eq:storage_only_one_section}
+        \end{equation}
+
+        A equação \ref{eq:storage_only_one_coil} implica que cada bobina pode 
+        ocupar apenas uma posição no espaço disponível. Isso em conjunto com 
+        \ref{eq:storage_only_one_section} implica que cada espaço disponível 
+        pode conter ao máximo uma bobina.
+
+        \begin{equation}
+            \sum_{a \in A}
+            \sum_{k \in \Phi}
+            W^s_{kI, a} = 0 \quad \forall s \in S 
+            \label{eq:storage_to_in_block}
+        \end{equation}
+
+        \begin{equation}
+            \sum_{a \in A}
+            \sum_{k \in \Phi}
+            W^s_{Ok, a} = 0 \quad \forall s \in S 
+            \label{eq:storage_to_out_block}
+        \end{equation}
+        
+        As equações \ref{eq:storage_to_in_block} e \ref{eq:storage_to_out_block}
+        restringem movimentações de cargas para o espaço de entrada e a partir do
+        espaço de saída.
+
+        \begin{equation}
+            \sum_{k \in \Phi} \sum_{q \in \Phi} V^s_{kq} + \sum_{k \in \Phi} \sum_{q \in \Phi} \sum_{a \in A} W^s_{kq,a} \leq 1 \quad \forall s \in S \tag{11}
+            \label{eq:one_crane_movement}
+        \end{equation}
+
+        A equação \ref{eq:one_crane_movement} implica que apenas uma movimentação
+        pode ocorrer em cada seção $s$.
+
+        \begin{equation}
+            \sum_{q \in \Phi} \sum_{a \in A} W^s_{kq,a} = \sum_{q \in \Phi} V^{s-1}_{qk} \quad \forall k \in \Phi, s \in S |_{s \neq 1}
+            \label{eq:movement_precence_ld_after_empty}
+        \end{equation}
+
+        Esta equação define a precedência entre movimentações de cargas. Ou seja,
+        a ponte rolante inicia seu movimento carregada na seção $s$ apenas quando
+        a seção $s-1$ vazia $V^{s-1}_{qk}$ terminou.
+
+        \begin{align}
+            \sum_{q \in \Phi} V^s_{kq} - \sum_{q \in \Phi} \sum_{a \in A} W^{s-1}_{qk,a} \leq 0 \quad \forall k \in \Phi, s \in S |_{s \neq 1}
+            \label{eq:movement_precence_empty_after_ld}
+        \end{align}
+
+        Esta equação define a precedência entre movimentações vazias. Ou seja,
+        um movimento vazio na seção $s$ ocorre apenas quando
+        a seção $s-1$ carregada $W^{s-1}_{qk,a}$ terminou.
+
+        \begin{align}
+            s_{ka} = x^1_{ka} - \sum_{q \in \Phi} \sum_{\hat{s}=1}^{s-1} W^{\hat{s}}_{kq,a} + \sum_{q \in \Phi} \sum_{\hat{s}=1}^{s-1} W^{\hat{s}}_{qk,a} \quad \\
+            \forall s \in S | s \neq 1, k \in \Phi, a \in A
+            \label{eq:current_position_depends_on_previous_moves}
+        \end{align}
+
+        A equação \ref{eq:current_position_depends_on_previous_moves} define
+        que a ocupação de um espaço vazio em um intervalo $s$ depende das movimentações
+        de entrada e saída de bobinas em intervalos anteriores.
+
+
+        \begin{align}
+            \sum_{q \in \Phi} \sum_{a \in A} W^s_{kq,a} \leq 1 - \sum_{a \in A} x^s_{k+1,a} \quad \forall s \in S, k \in \Psi^1 \setminus \Psi^{P_{max}}
+            \label{eq:upper_layer_blocking}
+        \end{align}
+
+        \ref{eq:upper_layer_blocking} garante que uma bobina no nível 1 fica 
+        bloqueada para movimentação caso haja uma bobina no nível 2 em uma posição
+        maior.
+
+        \begin{align}
+            \sum_{q \in \Phi} \sum_{a \in A} W^s_{kq,a} \leq 1 - \sum_{a \in A} x^s_{k-1,a} \quad \forall s \in S, k \in \Psi^1 \setminus \Psi
+            \label{eq:upper_layer_blocking_1}
+        \end{align}
+
+        Similarmente, \ref{eq:upper_layer_blocking_1} garante que uma bobina no nível 2 fica 
+        bloqueada para movimentação caso haja uma bobina no nível 1 em uma posição
+        menor.
+
+        \begin{align}
+            2 \cdot \sum_{k \in \Phi} \sum_{a \in A} W_s^{kq,a} \leq \sum_{a \in A} (x_s^{q-1,a} + x_s^{q+1,a}) \quad \\
+            \forall s \in S, q \in \Psi^2
+            \label{eq:lower_layer_blocking}
+        \end{align}
+
+        Finalmente \ref{eq:lower_layer_blocking} garante que uma bobina no nível 2 fica 
+        bloqueada de ser posicionada em um espaço caso não hajam duas bobinas 
+        embaixo. 
     \section{Descrição do algoritmo}
 
 
@@ -146,8 +299,6 @@
 
     
     \section{Conclusão}            
-
-    Neste artigo, buscamos aplicar técnicas da Pesquisa Operacional na otimização de paralelismo na progamação de FPGAs por meio da síntese de alto nível. Ao mesmo tempo, isso significou uma revisão das soluções para os problemas do tipo RCPSP.
     
     \bibliography{referencias}
 
