@@ -131,13 +131,13 @@
         A igualdade \ref{eq:t0} implica que o tempo inicial modelado é o instante 0.
 
         \begin{equation}
-            \sum_{q \in \Phi | q \neq I} \sum_{s \in S} W_s I_{q,a} = 1 \quad \forall a \in A_{in} 
+            \sum_{q \in \Phi | q \neq I} \sum_{s \in S} W^s_{Iq,a} = 1 \quad \forall a \in A_{in} 
             \label{eq:in_movement_limit}
         \end{equation}
 
         \begin{equation}
-        \sum_{k \in \Phi | k \neq O} \sum_{s \in S} W_s k_{O,a} = 1 \quad \forall a \in A_{out}
-        \label{eq:out_movement_limit}
+            \sum_{k \in \Phi | k \neq O} \sum_{s \in S} W^s_{kO,a} = 1 \quad \forall a \in A_{out}
+            \label{eq:out_movement_limit}
         \end{equation}
 
         A equação \ref{eq:in_movement_limit} 
@@ -147,22 +147,22 @@
 
 
         \begin{equation}
-            \sum_{k \in \Phi | k \neq O} \sum_{s \in S} W_s k_{O,a} = 0 \quad \forall a \in A \setminus A_{out} 
+            \sum_{k \in \Phi | k \neq O} \sum_{s \in S} W^s_{kO,a} = 0 \quad \forall a \in A \setminus A_{out} 
             \label{eq:storage_requirement}
         \end{equation}
 
-        Em contraste trata dos casos em que a bobina fica armazenada, portanto não
+        Em contraste \ref{eq:storage_requirement} trata dos casos em que a bobina fica armazenada, portanto não
         entregue em $S$.
         
         
 
         \begin{equation}
-        s^- + a \leq (1 - x_s I_a) \cdot M \quad \forall a \in A_{in}, s \in S 
+        s^- + a \leq (1 - x^s_{I,a}) \cdot M \quad \forall a \in A_{in}, s \in S 
             \label{eq:storage_in_time}
         \end{equation}
         
         \begin{equation}
-            -a - s^+ \leq x_s I_a \cdot M \quad \forall a \in A_{in}, s \in S 
+            -a - s^+ \leq x^s_{I,a} \cdot M \quad \forall a \in A_{in}, s \in S 
             \label{eq:storage_deadline_time}
         \end{equation}
         
@@ -282,7 +282,7 @@
         menor.
 
         \begin{align}
-            2 \cdot \sum_{k \in \Phi} \sum_{a \in A} W_s^{kq,a} \leq \sum_{a \in A} (x_s^{q-1,a} + x_s^{q+1,a}) \quad \\
+            2 \cdot \sum_{k \in \Phi} \sum_{a \in A} W^s_{kq,a} \leq \sum_{a \in A} (x^s_{q-1,a} + x^s_{q+1,a}) \quad \\
             \forall s \in S, q \in \Psi^2
             \label{eq:lower_layer_blocking}
         \end{align}
@@ -292,6 +292,8 @@
         embaixo. 
     \section{Descrição do algoritmo}
 
+    \subsection{Implementação do Algoritmo}
+    O algoritmo foi implementado utilizando a biblioteca Gurobi para otimização.
 
         
     \section{Resultados e análise}
