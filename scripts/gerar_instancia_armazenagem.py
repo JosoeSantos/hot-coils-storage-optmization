@@ -157,6 +157,8 @@ def gerar_instancia_armazenagem(
             posicoes.append((x, y, 0))  # nível inferior
         for x in range(num_posicoes_nivel_inferior - 1):
             posicoes.append((x + 0.5, y, 1))  # nível superior, entre duas inferiores
+    
+    posicoes_ordenadas = posicoes.copy()
 
     random.shuffle(posicoes)
 
