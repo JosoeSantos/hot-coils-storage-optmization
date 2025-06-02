@@ -1,0 +1,89 @@
+from gurobipy import Model, GRB, quicksum
+
+model = Model("Armazenagem")
+
+import numpy as np
+
+# Tamanhos do problema (exemplos, substitua pelos reais)
+num_posicoes = 4
+num_secoes = 2
+num_bobinas = 3
+
+# Conjuntos
+Psi = list(range(num_posicoes))         # posições disponíveis
+S = list(range(num_secoes))             # seções de tempo
+A = list(range(num_bobinas))            # bobinas
+Phi = [0, num_posicoes - 1]             # entrada (I) e saída (O) simplificadas
+A_in = A[:1]                             # uma bobina entra
+A_out = A[1:]                            # o resto sai
+M = 99999                                # constante grande
+
+# Camadas
+Psi1 = Psi[:num_posicoes // 2]
+Psi2 = Psi[num_posicoes // 2:]
+
+# Vetores de janelas de tempo de entrada e saída
+# TODO: Adicionar lógica para definir janelas de tempo de entrada e saída
+sigma_minus = np.random.randint(0, 3, size=len(A))
+sigma_plus = sigma_minus + np.random.randint(1, 4, size=len(A))
+omega_minus = np.random.randint(3, 6, size=len(A))
+omega_plus = omega_minus + np.random.randint(1, 4, size=len(A))
+
+# Matrizes de tempo e energia de movimentação
+t_load = np.random.randint(1, 5, size=(num_posicoes, num_posicoes))
+t_empty = np.random.randint(1, 5, size=(num_posicoes, num_posicoes))
+E_load = np.random.randint(10, 50, size=(num_posicoes, num_posicoes, len(A)))
+E_empty = np.random.randint(5, 20, size=(num_posicoes, num_posicoes))
+
+# Variáveis de decisão (inicializadas com zeros)
+W = np.zeros((len(S), num_posicoes, num_posicoes, len(A)), dtype=int)
+V = np.zeros((len(S), num_posicoes, num_posicoes), dtype=int)
+x = np.zeros((len(S), num_posicoes, len(A)), dtype=int)
+tau = np.zeros(len(S), dtype=float)
+tau[0] = 0.0  # conforme a restrição τ¹ = 0
+
+# Saída de dados para verificação (exemplo)
+print("t_load[0][1] =", t_load[0][1])
+print("E_load[0][1][0] =", E_load[0][1][0])
+print("σ⁻[a] =", sigma_minus)
+print("ω⁺[a] =", omega_plus)
+# Definindo variáveis de decisão no modelo
+
+
+
+# W[s][k][q][a] = 1 se bobina a se move de k -> q na seção s
+W = model.addVars(len(S), len(Psi), len(Psi), len(A), vtype=GRB.BINARY, name="W")
+
+# V[s][k][q] = 1 se movimentação vazia de k -> q ocorre na seção s
+V = model.addVars(len(S), len(Psi), len(Psi), vtype=GRB.BINARY, name="V")
+
+# x[s][q][a] = 1 se bobina a está na posição q na seção s
+x = model.addVars(len(S), len(Psi), len(A), vtype=GRB.BINARY, name="x")
+
+# τ[s] = instante de tempo do início da seção s
+tau = model.addVars(len(S), vtype=GRB.CONTINUOUS, name="tau")
+
+
+# Definindo restrições do modelo
+
+
+model.addConstr(tau[0] == 0)  # restrição τ¹ = 0
+
+for a in A_in:
+    model.addConstr(quicksum(W[s, Phi[0], q, a] for s in S for q in Psi) == 1, name=f"entrada_bobina_{a}")
+
+for a in A_out:
+    model.addConstr(quicksum(W[s, q, Phi[1], a] for s in S for q in Psi) == 1, name=f"saida_bobina_{a}")
+
+for a in A:
+    if a not in A_out:
+        model.addConstr(quicksum(W[s, k, Phi[1], a] for s in S for k in Psi) == 0, name=f"nao_movimenta_bobina_{a}")
+
+
+
+model.update()
+
+# Exemplo de resitrição de movimentação
+# Serve somente para debugar e verificar se as variáveis estão sendo criadas corretamente
+print(model.getRow(model.getConstrs()[1]))
+

@@ -9,4 +9,7 @@ clean:
 		make -C $$dir clean; \
 	done
 
+sol:
+	python scripts/solution_runner.py
+
 .PHONY: all
