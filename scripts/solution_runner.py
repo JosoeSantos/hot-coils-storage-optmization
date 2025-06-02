@@ -80,6 +80,12 @@ for a in A:
         model.addConstr(quicksum(W[s, k, Phi[1], a] for s in S for k in Psi) == 0, name=f"nao_movimenta_bobina_{a}")
 
 
+model.setObjective(
+    quicksum(
+        W[s, k, q, a] * E_load[k][q][a] + V[s, k, q] * E_empty[k][q] for s in S for k in Psi for q in Psi for a in A
+    ),
+    GRB.MINIMIZE
+);
 
 model.update()
 
