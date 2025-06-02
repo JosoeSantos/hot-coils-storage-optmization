@@ -80,6 +80,29 @@ for a in A:
         model.addConstr(quicksum(W[s, k, Phi[1], a] for s in S for k in Psi) == 0, name=f"nao_movimenta_bobina_{a}")
 
 
+## TODO: rename constraints after here
+for a in A_in: 
+    for s in S:
+        model.addConstr(
+            tau[s] + sigma_plus[a] <= (1 - x[s, Phi[0], a]) * M,
+            name=f"entrada_bobina_{a}_seção_{s}"
+        )
+
+for a in A_in: 
+    for s in S:
+        model.addConstr(
+            omega_minus[a] - tau[s] <= x[s, Phi[1], a] * M,
+            name=f"saida_bobina_{a}_seção_{s}"
+        )
+
+for a in A_out:
+    for s in S:
+        model.addConstr(
+            omega_minus[a] - (tau[s] + quicksum(W[s, k, Phi[1], a] * t_load[k, Phi[1]] for k in Psi)) <= (1 - x[s, Phi[1], a]) * M,
+            name=f"saida_bobina_{a}_seção_{s}"
+        )
+
+
 model.setObjective(
     quicksum(
         W[s, k, q, a] * E_load[k][q][a] + V[s, k, q] * E_empty[k][q] for s in S for k in Psi for q in Psi for a in A
