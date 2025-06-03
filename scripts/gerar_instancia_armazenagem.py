@@ -52,7 +52,7 @@ import random
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
-
+import math
 
 def plotar_instancia_2d(instancia):
     cores = {
@@ -136,6 +136,86 @@ def plotar_instancia_3d(instancia, raio=0.4, altura_bobina=1.0):
     plt.show()
 
 
+def gerar_posicoes(
+    num_fileiras: int,
+    num_posicoes_nivel_inferior: int,
+):
+    """
+    Gera as posições de armazenamento. No formato proposto por 
+    Weckenborg et al. (2025).
+    Exemplo para uma pilha de 3 bobinas
+
+    I + [(111), (112), (121)] + O
+    """
+    posicoes = []
+    Psi_max = []
+    for y in range(num_fileiras):
+        for x in range(num_posicoes_nivel_inferior):
+            posicoes.append((y, 1, x))  # nível inferior
+            if x == num_posicoes_nivel_inferior:
+                Psi_max.append((y, 1, x))
+        for x in range(num_posicoes_nivel_inferior - 1):
+            posicoes.append((y, 2, x))  # nível superior, entre duas inferiores
+    
+    I = [(y, 1, - 1) for y in range(num_fileiras)]
+    O = [(y, 2, num_posicoes_nivel_inferior + 1) for y in range(num_fileiras)]
+
+    return {
+        "Psi":  I + posicoes +  O,
+        "Psi1": I + posicoes[:num_posicoes_nivel_inferior] + O,
+        "Psi2": posicoes[num_posicoes_nivel_inferior:],
+        "Psi_max": Psi_max,
+        "I": I,
+        "O": O,
+    }
+
+def gerar_custos_de_movimentacao():
+    """
+    Gera os custos de movimentação para o problema de armazenamento.
+    
+    Cada movimentação vertical no diametro de uma bobina custa 1 unidade de tempo.
+    Cada movimentação horizontal no diametro de uma bobina custa 0.5 unidades de tempo.
+    
+    """
+    t_load = np.zeros((len(Psi), len(Psi)), dtype=float)
+    t_empty = np.zeros((len(Psi), len(Psi)), dtype=float)
+    E_load = np.zeros((len(Psi), len(Psi), len(A)), dtype=float)
+    E_empty = np.zeros((len(Psi), len(Psi), len(A)), dtype=float)
+
+    for k in Psi:
+        for q in Psi:
+            t_vertical = 3 - k[1] +  3 - q[1];
+            t_horizontal = ((q[0] - k[0]) + (q[2] - k[2])) *0.5/math.sqrt(2);
+            t_load[k][q] = t_vertical + t_horizontal
+            t_empty[k][q] = t_load[k][q] * 0.9
+
+    for k in Psi:
+        for q in Psi:
+            for a in A:
+                E_load[k][q][a] = t_load[k, q] * 100;
+                E_empty[k][q][a] = t_empty[k, q] * 20;
+    
+
+    return {
+        t_load: t_load,
+        t_empty: t_empty,
+        E_load: E_load,
+        E_empty: E_empty
+    }
+
+def converter_posicoes_para_instancia(posicoes, num_posicoes_nivel_inferior):
+    instancia = []
+    for posicao in posicoes:
+        instancia.append({
+            "id": f"B{posicao[0]}",
+            "x": posicao[1],
+            "y": posicao[2],
+            "z": posicao[3],
+            "tipo": "vazio",
+            "nivel": 1 if posicao[3] == 0 else 2
+        })
+    return instancia
+
 def gerar_instancia_armazenagem(
     num_fileiras: int,
     num_posicoes_nivel_inferior: int,
@@ -157,8 +237,6 @@ def gerar_instancia_armazenagem(
             posicoes.append((x, y, 0))  # nível inferior
         for x in range(num_posicoes_nivel_inferior - 1):
             posicoes.append((x + 0.5, y, 1))  # nível superior, entre duas inferiores
-    
-    posicoes_ordenadas = posicoes.copy()
 
     random.shuffle(posicoes)
 
@@ -241,20 +319,20 @@ def gerar_instancia_armazenagem(
     return instancia
 
 
-instancia = gerar_instancia_armazenagem(
-    num_fileiras=2,
-    num_posicoes_nivel_inferior=3,
-    num_bobinas_entrada=1,
-    num_bobinas_saida=2,
-    num_bobinas_bloqueadoras=1,
-    pontos_entrada=[(0, -1), (1, -1)],
-    pontos_saida=[(0, 4), (1, 4)],
-    incluir_irrelevantes=False,
-    random_seed=42
-)
+# instancia = gerar_instancia_armazenagem(
+#     num_fileiras=2,
+#     num_posicoes_nivel_inferior=3,
+#     num_bobinas_entrada=1,
+#     num_bobinas_saida=2,
+#     num_bobinas_bloqueadoras=1,
+#     pontos_entrada=[(0, -1), (1, -1)],
+#     pontos_saida=[(0, 4), (1, 4)],
+#     incluir_irrelevantes=False,
+#     random_seed=42
+# )
 
-for b in instancia:
-    print(b)
+# for b in instancia:
+#     print(b)
 
-plotar_instancia_2d(instancia)
-plotar_instancia_3d(instancia)
+# plotar_instancia_2d(instancia)
+# plotar_instancia_3d(instancia)
