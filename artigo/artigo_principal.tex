@@ -253,8 +253,8 @@
         a seção $s-1$ carregada $W^{s-1}_{qk,a}$ terminou.
 
         \begin{align}
-            s_{ka} = x^1_{ka} - \sum_{q \in \Phi} \sum_{\hat{s}=1}^{s-1} W^{\hat{s}}_{kq,a} + \sum_{q \in \Phi} \sum_{\hat{s}=1}^{s-1} W^{\hat{s}}_{qk,a} \quad \\
-            \forall s \in S | s \neq 1, k \in \Phi, a \in A
+            x^s_{ka} = x^1_{ka} - \sum_{q \in \Phi} \sum_{\hat{s}=1}^{s-1} W^{\hat{s}}_{kq,a} + \sum_{q \in \Phi} \sum_{\hat{s}=1}^{s-1} W^{\hat{s}}_{qk,a} \quad \notag \\
+            \forall s \in S |_{s \neq 1}, k \in \Phi, a \in A
             \label{eq:current_position_depends_on_previous_moves}
         \end{align}
 
@@ -282,7 +282,7 @@
         menor.
 
         \begin{align}
-            2 \cdot \sum_{k \in \Phi} \sum_{a \in A} W^s_{kq,a} \leq \sum_{a \in A} (x^s_{q-1,a} + x^s_{q+1,a}) \quad \\
+            2 \cdot \sum_{k \in \Phi} \sum_{a \in A} W^s_{kq,a} \leq \sum_{a \in A} (x^s_{q-1,a} + x^s_{q+1,a}) \quad \notag \\
             \forall s \in S, q \in \Psi^2
             \label{eq:lower_layer_blocking}
         \end{align}

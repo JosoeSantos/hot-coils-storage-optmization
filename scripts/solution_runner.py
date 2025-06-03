@@ -102,6 +102,74 @@ for a in A_out:
             name=f"saida_bobina_{a}_seção_{s}"
         )
 
+for ids, s in enumerate(S): 
+    if ids != 1:
+        model.addConstr(
+            s >= 
+                s[ids - 1] 
+                + quicksum(t_empty[k,q] * V[S[ids - 1], k, q] for k in Psi for q in Psi)
+                + quicksum(t_load[k,q] * W[S[ids - 1], k, q] for k in Psi for q in Psi)
+        )
+
+for a in A:
+    for s in S:
+        model.addConstr(
+            quicksum(x[s, k, a] for k in Psi) == 1,
+            name=f"bobina_{a}_seção_{s}"
+        )
+
+for a in A:
+    for s in S:
+        model.addConstr(
+           quicksum(x[s, k, a] for k in Psi) <= 1,
+           name=f"max_1_bobina_{a}_seção_{s}_espaco_{k}"
+        )
+
+for s in S:
+    model.addConstr(
+        quicksum(W[s, k, q, a] for k in Psi for q in I for a in A) == 0,
+        name=f"block_mover_{a}_para_I"
+    )
+
+for s in S:
+    model.addConstr(
+        quicksum(w[s, k, q, a] for k in O for q in Psi for a in A) == 0,
+        name=f"block_mover_{a}_para_O"
+    )
+
+for s in S:
+    model.addConstr(
+        quicksum(V[s, k, q] for k in Psi for q in Psi) 
+        + quicksum(W[s, k, q, a] for k in Psi for q in Psi for a in A)  <= 1,
+        name=f"max_1_movimento_por_secao_{s}"
+    )
+
+for k in Psi:
+    for ids, s in enumerate(S): 
+        if ids != 1:
+            model.addConstr(
+                quicksum(W[s, k, q, a], for q in Psi) = quicksum(V[S[ids -1], q, k]),
+                name=f"precedencia_{k}_secao_{s}_carregado"
+            )
+
+for k in Psi:
+    for ids, s in enumerate(S): 
+        if ids != 1:
+            model.addConstr(
+                quicksum(V[s, k, q] for q in Psi) - quicksum(W[S[ids - 1], q, k, a] for q in Psi for a in A),
+                name=f"precedencia_{k}_secao_{s}_descarregado"
+            )
+
+for k in Psi:
+    for ids, s in enumerate(S):
+        if ids != 1:
+            model.addConstr(
+                x[s, k, a] = x[1, k, a] - quicksum(W[s_hat, k, q, a] for q in Psi for a in A for s_hat in S)
+                + quicksum(W[s_hat, q, k, a] for q in Psi for a in A for s_hat in S),
+                name=f"ocupacao_de_{k}_na_secao_{s}_depende_de_movimentos_carregados"
+            )
+
+
 
 model.setObjective(
     quicksum(
