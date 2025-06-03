@@ -1,0 +1,105 @@
+\section{Descrição do Problema}
+
+\begin{frame}{Descrição do Problema - Notação e Variáveis do Modelo}
+\textbf{Variáveis de Decisão:}
+\begin{itemize}
+    \item $W^s_{kq,a}$: Ponte rolante \textbf{carregada} move a bobina $a$ da posição $k$ para $q$ na seção $s$.
+    \item $V^s_{kq}$: Ponte rolante \textbf{vazia} se move da posição $k$ para $q$ na seção $s$.
+    \item $x^s_{q,a}$: Bobina $a$ está armazenada na posição $q$ durante a seção $s$.
+    \item $\tau_s \in \mathbb{R}$: Tempo de início da seção $s$.
+\end{itemize}
+
+\vspace{0.4cm}
+\textbf{Outras Notações:}
+\begin{itemize}
+    \item $\Phi$: Conjunto de posições válidas no galpão.
+    \item $\Psi$: Conjunto de posições disponíveis para armazenamento (nível 1 e 2).
+    \item $A_{in}, A_{out}$: Conjuntos de bobinas a serem armazenadas ou retiradas.
+    \item $t^{\text{load}}_{kq},\ t^{\text{empty}}_{kq}$: Tempo para movimentações carregadas e vazias.
+    \item $E^{\text{load}}_{kq},\ E^{\text{empty}}_{kq}$: Energia consumida em cada tipo de movimentação.
+\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Descrição do Problema - Função Objetivo}
+\textbf{Objetivo:} Minimizar o consumo total de energia das movimentações da ponte rolante (carregadas e vazias).
+
+\vspace{0.3cm}
+
+\begin{block}{Função Objetivo:}
+    \[
+    \min E = 
+    \sum_{k \in \Phi} \sum_{q \in \Phi} \sum_{s \in S} \sum_{a \in A} 
+    \left( E^{\text{load}}_{kq,a} \cdot W^s_{kq,a} \right) +
+    \sum_{k \in \Phi} \sum_{q \in \Phi} \sum_{s \in S}
+    \left( E^{\text{empty}}_{kq} \cdot V^s_{kq} \right)
+    \]
+\end{block}
+
+\vspace{0.4cm}
+\textbf{Significado:}
+\begin{itemize}
+    \item Primeiro termo: custo energético de movimentações \textbf{carregadas}.
+    \item Segundo termo: custo energético de movimentações \textbf{vazias}.
+    \item O modelo busca um \textbf{planejamento ótimo} que minimize o total de energia consumida.
+\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Descrição do Problema - Principais Restrições}
+\textbf{Para modelagem, tivemos 18 restrições. As restrições foram agrupadas em 4 categorias:}
+\begin{itemize}
+    \item \textbf{1. Entrada e Saída:} garantem que todas as bobinas entrem ou saiam corretamente.
+    \item \textbf{2. Ocupação e Capacidade:} cada bobina ocupa apenas um espaço, e cada espaço só pode conter uma bobina.
+    \item \textbf{3. Precedência Temporal:} movimentações só ocorrem após a anterior ser finalizada.
+    \item \textbf{4. Empilhamento e Bloqueios:} respeitam as regras de empilhamento entre níveis (bloqueios superiores/inferiores).
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Exemplos de Restrições por Categoria}
+
+\begin{block}{1. Entrada e Saída:}
+  \[
+    \sum_{q \in \Phi \,|\, q \ne I} \sum_{s \in S} W^s_{Iq,a} = 1 \quad \forall a \in A_{in}
+    \]
+    \textit{Cada bobina que entra deve ser movimentada a partir da posição de entrada.}
+\end{block}
+
+\vspace{0.2cm}
+\begin{block}{2. Ocupação e Capacidade:}
+    \[
+    \sum_{k \in \Phi} x^s_{ka} = 1 \quad \forall a \in A,\ s \in S
+    \]
+    \textit{Cada bobina ocupa uma única posição por seção.}
+\end{block}
+
+\vspace{0.2cm}
+
+\end{frame}
+
+\begin{frame}{Exemplos de Restrições por Categoria}
+\begin{block}{3. Precedência Temporal:}
+   \[
+    \tau_s \geq \tau_{s-1} +
+    \sum_{k \in \Phi} \sum_{q \in \Phi} \left( t^{empty}_{kq} \cdot V^{s-1}_{kq} \right)
+    +
+    \sum_{k \in \Phi} \sum_{q \in \Phi} \sum_{a \in A} \left( t^{load}_{kq} \cdot W^{s-1}_{kq,a} \right)
+    \quad \forall s \in S,\ s \ne 1
+    \]
+    \textit{As ações da seção atual só podem iniciar após o fim das ações da seção anterior.}
+\end{block}
+
+\vspace{0.2cm}
+\begin{block}{4. Empilhamento e Bloqueios:}
+    \[
+    \sum_{q \in \Phi} \sum_{a \in A} W^s_{kq,a} \leq 1 - \sum_{a \in A} x^s_{k+1,a}
+    \quad \forall s \in S,\ k \in \Psi^1 \setminus \Psi^{P_{\max}}
+    \]
+    \textit{Uma bobina no nível inferior só pode ser movimentada se não houver bobina acima.}
+\end{block}
+\end{frame}
