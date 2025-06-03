@@ -139,6 +139,7 @@ def plotar_instancia_3d(instancia, raio=0.4, altura_bobina=1.0):
 def gerar_posicoes(
     num_fileiras: int,
     num_posicoes_nivel_inferior: int,
+    num_entrada_saida: int,
 ):
     """
     Gera as posições de armazenamento. No formato proposto por 
@@ -148,23 +149,19 @@ def gerar_posicoes(
     I + [(111), (112), (121)] + O
     """
     posicoes = []
-    Psi_max = []
     for y in range(num_fileiras):
         for x in range(num_posicoes_nivel_inferior):
             posicoes.append((y, 1, x))  # nível inferior
-            if x == num_posicoes_nivel_inferior:
-                Psi_max.append((y, 1, x))
-        for x in range(num_posicoes_nivel_inferior - 1):
-            posicoes.append((y, 2, x))  # nível superior, entre duas inferiores
-    
-    I = [(y, 1, - 1) for y in range(num_fileiras)]
-    O = [(y, 2, num_posicoes_nivel_inferior + 1) for y in range(num_fileiras)]
+            if (x != num_posicoes_nivel_inferior):
+                posicoes.append((y, 2, x))  # nível superior, entre duas inferiores
+
+    I = [(y, 1, - 1) for y in range(num_entrada_saida)]
+    O = [(y, 2, num_posicoes_nivel_inferior + 1) for y in range(num_entrada_saida)]
 
     return {
         "Psi":  I + posicoes +  O,
         "Psi1": I + posicoes[:num_posicoes_nivel_inferior] + O,
         "Psi2": posicoes[num_posicoes_nivel_inferior:],
-        "Psi_max": Psi_max,
         "I": I,
         "O": O,
     }

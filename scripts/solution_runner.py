@@ -5,7 +5,7 @@ model = Model("Armazenagem")
 import numpy as np
 
 
-def gerar_modelo(num_posicoes, num_secoes, num_bobinas):
+def gerar_modelo(num_posicoes, num_secoes, num_bobinas, ):
 
     # Conjuntos
     Psi = list(range(num_posicoes))         # posições disponíveis
@@ -37,6 +37,7 @@ def gerar_modelo(num_posicoes, num_secoes, num_bobinas):
     W = np.zeros((len(S), num_posicoes, num_posicoes, len(A)), dtype=int)
     V = np.zeros((len(S), num_posicoes, num_posicoes), dtype=int)
     x = np.zeros((len(S), num_posicoes, len(A)), dtype=int)
+
     tau = np.zeros(len(S), dtype=float)
     tau[0] = 0.0  # conforme a restrição τ¹ = 0
 
