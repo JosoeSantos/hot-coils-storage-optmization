@@ -146,25 +146,25 @@
         implica que todas as bobinas que devem ser entreques em $S$ são entregues.
 
 
-        \begin{equation}
+        \begin{align}
             \sum_{k \in \Phi | k \neq O} \sum_{s \in S} W^s_{kO,a} = 0 \quad \forall a \in A \setminus A_{out} 
             \label{eq:storage_requirement}
-        \end{equation}
+        \end{align}
 
         Em contraste \ref{eq:storage_requirement} trata dos casos em que a bobina fica armazenada, portanto não
         entregue em $S$.
         
         
 
-        \begin{equation}
+        \begin{align}
         \tau^s + \sigma^+_a \leq (1 - x^s_{I,a}) \cdot M \quad \forall a \in A_{in}, s \in S 
             \label{eq:storage_in_time}
-        \end{equation}
+        \end{align}
         
-        \begin{equation}
+        \begin{align}
              \sigma^-_a - \tau^s \leq x^s_{I,a} \cdot M \quad \forall a \in A_{in}, s \in S 
             \label{eq:storage_deadline_time}
-        \end{equation}
+        \end{align}
         
         As equações \ref{eq:storage_in_time} e \ref{eq:storage_deadline_time} definem
         prioridades de movimentação para os momentos em que as cargas ficam disponíveis
@@ -193,51 +193,52 @@
         Note que cada intervalo não $s$ não sobrepoe outros intervaos e inclusíve
         essa formulação deixa aberta a possibilidade de tempo de espera entre fases.
         
-        \begin{equation}
+        \begin{align}
             \sum_{k \in \Phi} x^s_{ka} = 1 \quad \forall a \in A,\ s \in S
             \label{eq:storage_only_one_coil}
-        \end{equation}
+        \end{align}
 
-        \begin{equation}
+        \begin{align}
             \sum_{a \in A} x^s_{ka} \leq 1 \quad \forall a \in A, s \in S
             \label{eq:storage_only_one_section}
-        \end{equation}
+        \end{align}
 
         A equação \ref{eq:storage_only_one_coil} implica que cada bobina pode 
         ocupar apenas uma posição no espaço disponível. Isso em conjunto com 
         \ref{eq:storage_only_one_section} implica que cada espaço disponível 
         pode conter ao máximo uma bobina.
 
-        \begin{equation}
+        \begin{align}
             \sum_{a \in A}
             \sum_{k \in \Phi}
             W^s_{kI, a} = 0 \quad \forall s \in S 
             \label{eq:storage_to_in_block}
-        \end{equation}
+        \end{align}
 
-        \begin{equation}
+        \begin{align}
             \sum_{a \in A}
             \sum_{k \in \Phi}
             W^s_{Ok, a} = 0 \quad \forall s \in S 
             \label{eq:storage_to_out_block}
-        \end{equation}
+        \end{align}
         
         As equações \ref{eq:storage_to_in_block} e \ref{eq:storage_to_out_block}
         restringem movimentações de cargas para o espaço de entrada e a partir do
         espaço de saída.
 
-        \begin{equation}
-            \sum_{k \in \Phi} \sum_{q \in \Phi} V^s_{kq} + \sum_{k \in \Phi} \sum_{q \in \Phi} \sum_{a \in A} W^s_{kq,a} \leq 1 \quad \forall s \in S \tag{11}
+        \begin{align}
+            \sum_{k \in \Phi} \sum_{q \in \Phi} V^s_{kq} + \sum_{k \in \Phi} \sum_{q \in \Phi} \sum_{a \in A} W^s_{kq,a} \leq 1 \quad \notag \\
+            \forall s \in S
             \label{eq:one_crane_movement}
-        \end{equation}
+        \end{align}
 
         A equação \ref{eq:one_crane_movement} implica que apenas uma movimentação
         pode ocorrer em cada seção $s$.
 
-        \begin{equation}
+        \begin{align}
             \sum_{q \in \Phi} \sum_{a \in A} W^s_{kq,a} = \sum_{q \in \Phi} V^{s-1}_{qk} \quad \forall k \in \Phi, s \in S |_{s \neq 1}
             \label{eq:movement_precence_ld_after_empty}
-        \end{equation}
+        \end{align}
 
         Esta equação define a precedência entre movimentações de cargas. Ou seja,
         a ponte rolante inicia seu movimento carregada na seção $s$ apenas quando

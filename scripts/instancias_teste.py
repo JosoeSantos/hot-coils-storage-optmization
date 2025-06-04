@@ -190,6 +190,19 @@ def plotar_organizacao(bobinas_colocadas, num_total_bobinas_solicitadas, num_fil
     plt.show()
 
 
+# def ordenar_instancia(arranjo):
+#     """
+#     Ordena a instancia de acordo com o formato proposto por Weckenborg et al. (2025).
+    
+#     Args:
+#         instancia (list): Lista de dicionários representando as bobinas.
+    
+#     Returns:
+#         list: Lista ordenada de acordo com o formato.
+#     """
+#     instancia_ordenada = sorted(instancia, key=lambda x: (x["nivel"], x["x"], x["y"]))
+#     return instancia_ordenada
+
 # Exemplo de uso:
 if __name__ == '__main__':
     # Cenário 1: Exemplo do usuário para o array de ocupação
@@ -201,6 +214,7 @@ if __name__ == '__main__':
     # A função agora retorna duas listas
     arranjo_ex1, ocupacao_ex1 = distribuir_bobinas(num_bobinas_ex1, num_fileiras_ex1, max_base_ex1)
 
+    # arranjo_ex1_ordenado = ordenar_instancia(arranjo_ex1)
     print(f"Arranjo gerado (bobinas colocadas): {arranjo_ex1}")
     print(f"Array de ocupação de todas as posições possíveis: {ocupacao_ex1}")
 
@@ -248,8 +262,7 @@ if __name__ == '__main__':
     print(f"Arranjo gerado: {arranjo_ex4}")  # Esperado: [] e mensagem de erro
     print(f"Array de ocupação: {ocupacao_ex4}")  # Esperado: array de 12 zeros
     if arranjo_ex4 or num_bobinas_ex4 == 0:
-        plotar_organizacao(arranjo_ex4, num_bobinas_ex4, num_fileiras_ex4, max_base_ex4)
-    print("-" * 30)
+     print("-" * 30)
 
     # Cenário 5: Zero bobinas
     print("Cenário 5: Zero Bobinas")
