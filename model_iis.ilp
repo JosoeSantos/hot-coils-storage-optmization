@@ -1,0 +1,23 @@
+\ Model Armazenagem_copy
+\ LP format - for model browsing. Use MPS format to capture full model detail.
+\ Signature: 0x75f243a67bbf9d08
+Minimize
+ 
+Subject To
+ R3_saida_unica_bobina_0: W[0,1,2,0] + W[0,2,2,0] + W[1,1,2,0] + W[1,2,2,0]
+   = 1
+ R12_bloqueia_movimento_para_saida_s0: W[0,2,0,0] + W[0,2,0,1] + W[0,2,1,0]
+   + W[0,2,1,1] + W[0,2,2,0] + W[0,2,2,1] = 0
+ R12_bloqueia_movimento_para_saida_s1: W[1,2,0,0] + W[1,2,0,1] + W[1,2,1,0]
+   + W[1,2,1,1] + W[1,2,2,0] + W[1,2,2,1] = 0
+ R16_ocupacao_depende_movimentos_anteriores_k2_s1: - W[0,0,2,0]
+   - W[0,0,2,1] - W[0,1,2,0] - W[0,1,2,1] + W[0,2,0,0] + W[0,2,0,1]
+   + W[0,2,1,0] + W[0,2,1,1] - W[1,0,2,0] - W[1,0,2,1] - W[1,1,2,0]
+   - W[1,1,2,1] + W[1,2,0,0] + W[1,2,0,1] + W[1,2,1,0] + W[1,2,1,1] = 0
+Bounds
+Binaries
+ W[0,0,2,0] W[0,0,2,1] W[0,1,2,0] W[0,1,2,1] W[0,2,0,0] W[0,2,0,1]
+ W[0,2,1,0] W[0,2,1,1] W[0,2,2,0] W[0,2,2,1] W[1,0,2,0] W[1,0,2,1]
+ W[1,1,2,0] W[1,1,2,1] W[1,2,0,0] W[1,2,0,1] W[1,2,1,0] W[1,2,1,1]
+ W[1,2,2,0] W[1,2,2,1]
+End
