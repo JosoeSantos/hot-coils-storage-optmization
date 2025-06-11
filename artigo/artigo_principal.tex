@@ -41,20 +41,8 @@
 
     \title{Otimização do gasto energético em um galpão de bobinas quentes de aço}
     \nocite{*}
-    \author{Everson Elias \& Josoe S. Queiroz \& Valentim Moura, Victor Hugo} 
-    
+    \author{Everson Elias \& Josoe S. Queiroz \& Valentim Moura \& Victor Hugo} 
     \maketitle
-    	
-    \begin{abstract}
-        Parágrafo.\\
-        Parágrafo.\\
-        Parágrafo.\\
-        Parágrafo.
-    \end{abstract}
-    
-    \begin{IEEEkeywords}
-        SSA, 
-    \end{IEEEkeywords}
     
     \section{Introduction}
 
@@ -79,8 +67,6 @@
         de bobinas de aço, com foco na redução do consumo de energia associado à cada operação.
         Para isso, será abordada a modelagem do fluxo de bobinas, com base em
         distribuições distintas e cada vez mais complexas, visando a maximização da eficiência energética.
-
-    \section{Revisão da literatura}
         
     \section{Descrição do problema}
         \subsection{Notação}
@@ -347,24 +333,25 @@
         dependeria da velocidade máxima da ponte rolante.
 
     \subsection{Implementação do Algoritmo}
-    
+
     O algoritmo foi implementado utilizando a biblioteca Gurobi para otimização.
-    Para isto foram feitas estruturas em python para que que geram os paramêtros 
+    Para isto foram feitas estruturas em python para que que geram os parâmetros
     de entrada e os conjuntos usados nas restrições do problema. A função $gerar_modelo$
-    conteve todas as 18 restrições determinadas pela modelagem.
-    
+    conteve todas as 18 restrições determinadas pela modelagem. Com isso foi possível
+    gerar diferentes instâncias do problema para testes.
+
     \subsection{Resultados}
 
-    As solução deste problema pelo solver MIP não é trivial, portanto
+    As solução deste problema pelo solver PLIM não é trivial, portanto
     foram feitas diversas iterações de testes para garantir que o modelo
     se comportasse de forma esperada. A seguir estão os principais pontos
     de atenção que foram observados durante a implementação:
     \begin{itemize}
-        \item Com a atual modelagem é possível que o solver não encontre uma solução
-        \item A modelagem não funcionou para casos em que hávia bobinas entrando e saíndo.
+        \item Com a atual modelagem é possível que o solver não encontre uma solução.
+        \item A modelagem não funcionou para casos em que havia bobinas entrando e saindo.
         \item Mesmo que não haja bobinas entrando e saindo, a modelagem pode não encontrar uma solução viável.
         \item Caso o número de intervalos $s$ seja 1 o modelo geralmente converge porque há somente uma movimentação descarregada.
-    
+    \end{itemize}
     \section{Conclusão}            
 
     Este trabalho explorou a otimização do movimento de bobinas de aço com 
