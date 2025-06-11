@@ -193,7 +193,7 @@ def gerar_modelo(
 ) -> Model:
     # Conjuntos
     S = range(S)
-    M = 10 * len(A)  # constante grande
+    M = 999  # constante grande
 
     Phi = np.zeros(len(Psi), dtype=int)
     Psi = np.zeros(len(Psi), dtype=int)
@@ -218,8 +218,14 @@ def gerar_modelo(
         np.random.randint(0, 3, size=len(A)) * 1
     )  # em segundos (30 minutos)
     sigma_plus = sigma_minus + np.random.randint(1, 4, size=len(A)) * 1
-    omega_minus = np.random.randint(3, 6, size=len(A)) * 1
+    omega_minus = np.random.randint(2, 6, size=len(A)) * 1
     omega_plus = omega_minus + np.random.randint(1, 4, size=len(A)) * 1
+
+    print(A)
+    print("sigma_minus", sigma_minus)
+    print("sigma_plus", sigma_plus)
+    print("omega_minus", omega_minus)
+    print("omega_plus", omega_plus)
 
     # Variáveis de decisão (inicializadas com zeros)
     W = np.zeros((len(S), len(Phi), len(Phi), len(A)), dtype=int)
@@ -278,7 +284,8 @@ def gerar_modelo(
                 for s in S
                 for k in range_Phi
                 if k not in O
-            ) == 1,
+            )
+            == 1,
             name=f"R3_saida_unica_bobina_{a}",
         )
 
@@ -536,7 +543,7 @@ def test():
         # with open(f"custos_{teste['num_fileiras']}x{teste['num_posicoes_nivel_inferior']}x{teste['num_entrada_saida']}.txt", "w") as f:
         # f.write(print_custos(custos))
 
-        A = [0, 1]
+        A = [0]
 
         gerar_modelo(
             posicoes["Psi"],
@@ -550,9 +557,9 @@ def test():
             custos["E_load"],
             custos["E_empty"],
             A,
-            [],
             [0],
-            2,
+            [0],
+            3,
         )
 
 

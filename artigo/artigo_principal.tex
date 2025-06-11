@@ -120,8 +120,7 @@
         \end{align*}
 
         %% mais opções de formatação em https://claude.ai/public/artifacts/21eeb3b8-a6b8-4752-9433-9b1826e63fe4
-
-        Sujeito a:
+        \subsection{Restrições}
 
         \begin{equation}
             \tau^{1} = 0
@@ -291,11 +290,52 @@
 
         Finalmente \ref{eq:lower_layer_blocking} garante que uma bobina no nível 2 fica 
         bloqueada de ser posicionada em um espaço caso não hajam duas bobinas 
-        embaixo. 
-    \section{Descrição do algoritmo}
+        embaixo.
+
+    \section{Geração de dados para testes}
+
+        A implementação da solução depende da obtenção ou geração de dados que
+        representam a produção, espaço de armazenagem, custos de movimentação, 
+        tempo de armazenagem e a demanda por bobinas de aço.
+        Devido a imensa complexidade da coleta e riscos de vazamentos de dados 
+        industriais, nossa equipe optou por não usar dados reais.
+        %% Preciso de rever o parágrafo abaixo
+        A geração de dados foi feita com base em equações simples de mecânica,
+        regras de agendamento para entrada e saída de cargas do armazém. Nisto também
+        foram delimitados parâmetros com números pequenos para que a solução suporte
+        a possibilidade de escala por meio do princípio da linearidade.
+        
+        A fim de testar a viabilidade da implementação mais rápido supomos que 
+        todas as bobinas têm o mesmo peso e que a ponte rolante faz moviventos 
+        horizontais na diagonal e movimentos verticais somente no eixo y. Dessa
+        foma os custos de tempo e energia podem ser calculados por:
+
+        \begin{align}
+            E^{load}_{kqa} = w_a d^{vertical}_{kq} + w_a d^{horizontal}_{kq}
+        \end{align}
+
+        \begin{align}
+            E^{empty}_{kq} = d^{vertical}_{kq} + d^{horizontal}_{kq}
+        \end{align}
+
+        Similarmente os tempos de movimentação de das bobinas ente posições é 
+        calculado de forma proporcional a distancia entre espaços. 
+
+        \begin{align}
+            t^{load}_{kqa} = (d^{vertical}_{kq} + d^{horizontal}_{kq}) \Theta
+        \end{align}
+
+        \begin{align}
+            t^{empty}_{kq} = (d^{vertical}_{kq} + d^{horizontal}_{kq}) \Theta
+        \end{align}
+
+        Onde $\theta$ é uma constante arbitrária que, em uma situação mais realista,
+        dependeria da velocidade máxima da ponte rolante.
 
     \subsection{Implementação do Algoritmo}
+    
     O algoritmo foi implementado utilizando a biblioteca Gurobi para otimização.
+    Mas
 
         
     \section{Resultados e análise}
