@@ -335,12 +335,21 @@
     \subsection{Implementação do Algoritmo}
     
     O algoritmo foi implementado utilizando a biblioteca Gurobi para otimização.
-    Mas
+    Para isto foram feitas estruturas em python para que que geram os paramêtros 
+    de entrada e os conjuntos usados nas restrições do problema. A função $gerar_modelo$
+    conteve todas as 18 restrições determinadas pela modelagem.
+    
+    \subsection{Resultados}
 
-        
-    \section{Resultados e análise}
-
-
+    As solução deste problema pelo solver MIP não é trivial, portanto
+    foram feitas diversas iterações de testes para garantir que o modelo
+    se comportasse de forma esperada. A seguir estão os principais pontos
+    de atenção que foram observados durante a implementação:
+    \begin{itemize}
+        \item Com a atual modelagem é possível que o solver não encontre uma solução
+        \item A modelagem não funcionou para casos em que hávia bobinas entrando e saíndo.
+        \item Mesmo que não haja bobinas entrando e saindo, a modelagem pode não encontrar uma solução viável.
+        \item Caso o número de intervalos $s$ seja 1 o modelo geralmente converge porque há somente uma movimentação descarregada.
     
     \section{Conclusão}            
     

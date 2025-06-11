@@ -518,14 +518,14 @@ testes = [
         "num_bobinas_entrada": 1,
         "num_bobinas_saida": 1,
     },
-    # {
-    #     "num_fileiras": 2,
-    #     "num_posicoes_nivel_inferior": 2,
-    #     "num_entrada_saida": 1,
-    #     "num_bobinas": 1,
-    #     "num_bobinas_entrada": 1,
-    #     "num_bobinas_saida": 1,
-    # }
+    {
+        "num_fileiras": 2,
+        "num_posicoes_nivel_inferior": 2,
+        "num_entrada_saida": 1,
+        "num_bobinas": 1,
+        "num_bobinas_entrada": 1,
+        "num_bobinas_saida": 1,
+    }
 ]
 
 
